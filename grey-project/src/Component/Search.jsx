@@ -11,7 +11,6 @@ const Searcher = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mockData, setMockData] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false); 
-//   const [image, setimage] = useState('')
 
   useEffect(() => {
     fetchSearchResults();
