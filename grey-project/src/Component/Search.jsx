@@ -157,6 +157,7 @@ const Searcher = () => {
         <button type="submit">Search</button>
       </form>
 
+
       {isSearchClicked && searchResults.length > 0 && (
         <div>
           <h2>Search Results:</h2>
