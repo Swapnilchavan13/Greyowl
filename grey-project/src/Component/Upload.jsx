@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import "../Styles/upload.css";
 
 const UploadForm = () => {
   const [mediaTitle, setMediaTitle] = useState('');
@@ -22,7 +23,6 @@ const UploadForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    // Construct the data object to be sent to the API
     const data = {
       mediaTitle,
       date,

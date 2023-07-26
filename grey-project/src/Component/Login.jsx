@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import '../Styles/login.css';
 export const LoginForm = () => {
 
   const [username, setUsername] = useState('Demo login');
@@ -14,6 +15,7 @@ export const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit}>
+        <h1>Login Page</h1>
       <div>
         <label htmlFor="username">Username:</label>
         <input
