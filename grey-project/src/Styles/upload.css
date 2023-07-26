@@ -118,10 +118,10 @@ form {
   }
 
   div :first-child{
-    font: 100px;
+    font-size: 20px;
     color: rgb(63, 25, 99);
   }
 
-  #searchresult{
-    display: inline
+  #search{
+    width: 400px;
   }

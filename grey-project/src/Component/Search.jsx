@@ -79,8 +79,8 @@ const Searcher = () => {
   };
 
   return (
-    <div >
-      <form onSubmit={handleSubmit}>
+    <div>
+      <form id='search' onSubmit={handleSubmit}>
         <Link to="/upload">
           <button>Upload Page</button>
         </Link>
