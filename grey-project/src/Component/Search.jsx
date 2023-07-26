@@ -79,13 +79,13 @@ const Searcher = () => {
   };
 
   return (
-    <div>
+    <div >
       <form onSubmit={handleSubmit}>
         <Link to="/upload">
           <button>Upload Page</button>
         </Link>
         <h1>Search Page</h1>
-        <div>
+        <div >
           <label htmlFor="mediaTitle">Search for Media Title:</label>
           <input
             type="text"
@@ -159,6 +159,8 @@ const Searcher = () => {
       </form>
 
 
+<div >
+
       {isSearchClicked && searchResults.length > 0 && (
         <div>
           <h2>Search Results:</h2>
@@ -175,6 +177,8 @@ const Searcher = () => {
           </ul>
         </div>
       )}
+</div>
+
     </div>
   );
 };

@@ -19,6 +19,7 @@ form {
     margin-bottom: 15px;
   }
   
+
   label {
     font-weight: bold;
     color: #444;
@@ -71,7 +72,56 @@ form {
     padding: 30px;
   }
   img{
-    width: 150px;
+    border: 2px solid black;
+    width: 250px;
     height: 150px;
   }
+
+  #type {
+    display: flex;
+    align-items: center;
+  }
   
+  #type label {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  #type input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #007BFF;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  #type input[type="radio"]:checked {
+    background-color: #007BFF;
+  }
+  
+  #type label {
+    cursor: pointer;
+  }
+  
+  #type input[type="radio"]:checked + label {
+    color: #007BFF;
+    font-weight: bold;
+  }
+  
+  #type div{
+    display: inline;
+  }
+
+  div :first-child{
+    font: 100px;
+    color: rgb(63, 25, 99);
+  }
+
+  #searchresult{
+    display: inline
+  }

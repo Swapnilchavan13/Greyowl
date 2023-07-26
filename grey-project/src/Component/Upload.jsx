@@ -44,6 +44,13 @@ const UploadForm = () => {
 
       if (response.ok) {
         alert('Data saved successfully:', data);
+        
+        setMediaTitle('');
+        setDate('');
+        setMediaSource([]);
+        setMediaType('');
+        setKeywords('');
+        setImage('');
       } else {
         alert('Failed to save data:', response.status, response.statusText);
       }
@@ -88,7 +95,7 @@ const UploadForm = () => {
           required
         />
       </div>
-      <div>
+      <div id='type1'>
         <label>Media Source:</label>
         <div>
           <input
@@ -109,7 +116,7 @@ const UploadForm = () => {
           <label>Instagram</label>
         </div>
       </div>
-      <div>
+      <div id='type'>
         <label>Media Type:</label>
         <div>
           <input
