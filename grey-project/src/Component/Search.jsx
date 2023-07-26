@@ -11,6 +11,7 @@ const Searcher = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mockData, setMockData] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false); 
+//   const [image, setimage] = useState('')
 
   useEffect(() => {
     fetchSearchResults();
@@ -24,6 +25,7 @@ const Searcher = () => {
       }
       const data = await response.json();
       setMockData(data); 
+      console.log(data)
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -164,6 +166,7 @@ const Searcher = () => {
           <ul>
             {searchResults.map((result) => (
               <li key={result._id}>
+                <img src={result.image} alt="image" />
                 <h3>{result.mediaTitle}</h3>
                 <p>Date: {result.date}</p>
                 <p>Media Sources: {result.mediaSource.join(', ')}</p>

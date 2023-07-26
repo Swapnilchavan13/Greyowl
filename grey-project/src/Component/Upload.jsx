@@ -8,6 +8,7 @@ const UploadForm = () => {
   const [mediaSource, setMediaSource] = useState([]);
   const [mediaType, setMediaType] = useState('');
   const [keywords, setKeywords] = useState('');
+  const [image, setImage] = useState('');
 
   const handleMediaSourceChange = (event) => {
     const selectedSource = event.target.value;
@@ -29,6 +30,7 @@ const UploadForm = () => {
       mediaSource,
       mediaType,
       keywords,
+      image
     };
 
     try {
@@ -52,10 +54,10 @@ const UploadForm = () => {
 
   return (
     <form className='container' onSubmit={handleSubmit}>
-        <Link to="/search">
+      <Link to="/search">
         <button>Search Page</button>
-        </Link>
-        <h1>Upload Form</h1>
+      </Link>
+      <h1>Upload Form</h1>
       <div>
         <label htmlFor="mediaTitle">Media Title:</label>
         <input
@@ -63,6 +65,16 @@ const UploadForm = () => {
           id="mediaTitle"
           value={mediaTitle}
           onChange={(e) => setMediaTitle(e.target.value)}
+          required
+        />
+      </div>
+      <div>
+        <label htmlFor="image">Media Image (URL):</label>
+        <input
+          type="text"
+          id="image"
+          value={image}
+          onChange={(e) => setImage(e.target.value)}
           required
         />
       </div>
