@@ -30,7 +30,3 @@ This project is a web application for media management, allowing users to upload
 
 ## Data Storage
 The application uses MongoDB as the database for storing media content data. The backend server handles data storage and retrieval through API endpoints.
-
-## Contributing
-Contributions are welcome! If you find any issues or want to add new features, feel free to open a pull request.
-
