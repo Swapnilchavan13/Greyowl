@@ -117,6 +117,13 @@ form {
     display: inline;
   }
 
+  #type {
+    padding-left: 20px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+  }
+ 
   div :first-child{
     font-size: 20px;
     color: rgb(63, 25, 99);
@@ -124,4 +131,19 @@ form {
 
   #search{
     width: 400px;
+  }
+
+  #type1 div{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    font-size: 18px;
+  }
+  
+  #type1 div div div{
+    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+
+  }
+    #type1 input[type='checkbox'] {
+    margin-right: 5px;
   }

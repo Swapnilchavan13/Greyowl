@@ -1,127 +1,131 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import "../Styles/upload.css";
+import '../Styles/upload.css';
 
 const UploadForm = () => {
   const [mediaTitle, setMediaTitle] = useState('');
   const [date, setDate] = useState('');
-  const [mediaSource, setMediaSource] = useState([]);
   const [mediaType, setMediaType] = useState('');
   const [keywords, setKeywords] = useState('');
-  const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [mediaSource, setMediaSource] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
+  const mediaSourcesList = [
+    'Instagram',
+    'Owned',
+    'Direct Submissions',
+    'Publications',
+    'Sponsors',
+    'Others',
+  ];
 
   const handleMediaSourceChange = (event) => {
-    const selectedSource = event.target.value;
-    const isChecked = event.target.checked;
-
-    if (isChecked) {
-      setMediaSource((prevSources) => [...prevSources, selectedSource]);
+    const value = event.target.value;
+    if (event.target.checked) {
+      setMediaSource([...mediaSource, value]);
     } else {
-      setMediaSource((prevSources) => prevSources.filter((source) => source !== selectedSource));
+      setMediaSource(mediaSource.filter((item) => item !== value));
     }
+  };
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    setImageFile(file);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
 
-    const data = {
-      mediaTitle,
-      date,
-      mediaSource,
-      mediaType,
-      keywords,
-      image
-    };
+    const data = new FormData();
+    data.append('mediaTitle', mediaTitle);
+    data.append('date', date);
+    data.append('mediaSource', JSON.stringify(mediaSource));
+    data.append('mediaType', mediaType);
+    data.append('keywords', keywords);
+    data.append('image', imageFile);
 
     try {
       const response = await fetch('https://lonely-cow-life-jacket.cyclic.app/data', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
+        body: data,
       });
 
       if (response.ok) {
         alert('Data saved successfully:', data);
-        
+
         setMediaTitle('');
         setDate('');
         setMediaSource([]);
         setMediaType('');
         setKeywords('');
-        setImage('');
+        setImageFile(null);
       } else {
         alert('Failed to save data:', response.status, response.statusText);
       }
     } catch (error) {
       alert('An error occurred:', error);
     }
+
+    setLoading(false);
   };
 
   return (
     <form className='container' onSubmit={handleSubmit}>
-      <Link to="/search">
+      <Link to='/search'>
         <button>Search Page</button>
       </Link>
       <h1>Upload Form</h1>
       <div>
-        <label htmlFor="mediaTitle">Media Title:</label>
+        <label htmlFor='mediaTitle'>Media Title:</label>
         <input
-          type="text"
-          id="mediaTitle"
+          type='text'
+          id='mediaTitle'
           value={mediaTitle}
           onChange={(e) => setMediaTitle(e.target.value)}
           required
         />
       </div>
       <div>
-        <label htmlFor="image">Media Image (URL):</label>
-        <input
-          type="text"
-          id="image"
-          value={image}
-          onChange={(e) => setImage(e.target.value)}
-          required
-        />
+        <label htmlFor='image'>Media Image:</label>
+        <input type='file' id='image' onChange={handleImageChange} required />
       </div>
       <div>
-        <label htmlFor="date">Date:</label>
+        <label htmlFor='date'>Date:</label>
         <input
-          type="date"
-          id="date"
+          type='date'
+          id='date'
           value={date}
           onChange={(e) => setDate(e.target.value)}
           required
         />
       </div>
       <div id='type1'>
+        <div>
         <label>Media Source:</label>
         <div>
-          <input
-            type="checkbox"
-            value="Facebook"
-            onChange={handleMediaSourceChange}
-            checked={mediaSource.includes('Facebook')}
-          />
-          <label>Facebook</label>
+          {mediaSourcesList.map((source) => (
+            <div key={source}>
+              <input
+                type='checkbox'
+                value={source}
+                onChange={handleMediaSourceChange}
+                checked={mediaSource.includes(source)}
+              />
+              <label>{source}</label>
+            </div>
+          ))}
         </div>
-        <div>
-          <input
-            type="checkbox"
-            value="Instagram"
-            onChange={handleMediaSourceChange}
-            checked={mediaSource.includes('Instagram')}
-          />
-          <label>Instagram</label>
         </div>
       </div>
       <div id='type'>
         <label>Media Type:</label>
         <div>
           <input
-            type="radio"
-            value="png"
+            type='radio'
+            value='png'
             checked={mediaType === 'png'}
             onChange={(e) => setMediaType(e.target.value)}
             required
@@ -130,8 +134,8 @@ const UploadForm = () => {
         </div>
         <div>
           <input
-            type="radio"
-            value="jpg"
+            type='radio'
+            value='jpg'
             checked={mediaType === 'jpg'}
             onChange={(e) => setMediaType(e.target.value)}
           />
@@ -139,24 +143,62 @@ const UploadForm = () => {
         </div>
         <div>
           <input
-            type="radio"
-            value="gif"
+            type='radio'
+            value='gif'
             checked={mediaType === 'gif'}
             onChange={(e) => setMediaType(e.target.value)}
           />
           <label>gif</label>
         </div>
+        <div>
+          <input
+            type='radio'
+            value='MP4'
+            checked={mediaType === 'MP4'}
+            onChange={(e) => setMediaType(e.target.value)}
+          />
+          <label>MP4</label>
+        </div>
+        <div>
+          <input
+            type='radio'
+            value='MOV'
+            checked={mediaType === 'MOV'}
+            onChange={(e) => setMediaType(e.target.value)}
+          />
+          <label>MOV</label>
+        </div>
+        <div>
+          <input
+            type='radio'
+            value='WMV'
+            checked={mediaType === 'WMV'}
+            onChange={(e) => setMediaType(e.target.value)}
+          />
+          <label>WMV</label>
+        </div>
+        <div>
+          <input
+            type='radio'
+            value='AVI'
+            checked={mediaType === 'AVI'}
+            onChange={(e) => setMediaType(e.target.value)}
+          />
+          <label>AVI</label>
+        </div>
       </div>
       <div>
-        <label htmlFor="keywords">Keywords:</label>
+        <label htmlFor='keywords'>Keywords:</label>
         <input
-          type="text"
-          id="keywords"
+          type='text'
+          id='keywords'
           value={keywords}
           onChange={(e) => setKeywords(e.target.value)}
         />
       </div>
-      <button type="submit">Upload</button>
+      <button type='submit' disabled={loading}>
+        {loading ? 'Updating...' : 'Upload'}
+      </button>
     </form>
   );
 };

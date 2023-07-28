@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 const Searcher = () => {
-  const [mediaTitle, setMediaTitle] = useState('');
-  const [fromDate, setFromDate] = useState('');
-  const [toDate, setToDate] = useState('');
+  const [mediaTitle, setMediaTitle] = useState("");
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
   const [mediaSources, setMediaSources] = useState([]);
   const [dateSelected, setDateSelected] = useState(false);
-  const [keywords, setKeywords] = useState('');
+  const [keywords, setKeywords] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [mockData, setMockData] = useState([]);
-  const [isSearchClicked, setIsSearchClicked] = useState(false); 
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
 
   useEffect(() => {
     fetchSearchResults();
@@ -18,17 +18,32 @@ const Searcher = () => {
 
   const fetchSearchResults = async () => {
     try {
-      const response = await fetch('https://lonely-cow-life-jacket.cyclic.app/main');
+      const response = await fetch("https://lonely-cow-life-jacket.cyclic.app/main");
       if (!response.ok) {
-        throw new Error('Failed to fetch data from the API');
+        throw new Error("Failed to fetch data from the API");
       }
       const data = await response.json();
-      setMockData(data); 
-      console.log(data)
+
+      // Parse the 'mediaSource' data back into an array
+      const formattedData = data.map((item) => ({
+        ...item,
+        mediaSource: JSON.parse(item.mediaSource),
+      }));
+
+      setMockData(formattedData);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error("Error fetching data:", error);
     }
   };
+
+  const mediaSourcesList = [
+    "Instagram",
+    "Owned",
+    "Direct Submissions",
+    "Publications",
+    "Sponsors",
+    "Others",
+  ];
 
   const handleMediaSourceChange = (event) => {
     const selectedSource = event.target.value;
@@ -45,8 +60,8 @@ const Searcher = () => {
     setDateSelected(event.target.checked);
 
     if (!event.target.checked) {
-      setFromDate('');
-      setToDate('');
+      setFromDate("");
+      setToDate("");
     }
   };
 
@@ -55,17 +70,13 @@ const Searcher = () => {
     setIsSearchClicked(true);
 
     const filteredResults = mockData.filter((data) => {
-      const titleMatch = mediaTitle && data.mediaTitle.includes(mediaTitle);
+      const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
+      const keywordsMatch = keywords && data.keywords === keywords;
       const dateMatch =
-        dateSelected &&
-        fromDate &&
-        toDate &&
-        data.date >= fromDate &&
-        data.date <= toDate;
+        dateSelected && fromDate && toDate && data.date >= fromDate && data.date <= toDate;
       const mediaSourceMatch =
         mediaSources.length > 0 &&
-        mediaSources.every((source) => data.mediaSource.includes(source));
-      const keywordsMatch = keywords && data.keywords.includes(keywords);
+        mediaSources.some((source) => data.mediaSource.includes(source));
 
       return (
         (!mediaTitle || titleMatch) &&
@@ -80,19 +91,18 @@ const Searcher = () => {
 
   return (
     <div>
-      <form id='search' onSubmit={handleSubmit}>
+      <form id="search" onSubmit={handleSubmit}>
         <Link to="/upload">
           <button>Upload Page</button>
         </Link>
         <h1>Search Page</h1>
-        <div >
+        <div>
           <label htmlFor="mediaTitle">Search for Media Title:</label>
           <input
             type="text"
             id="mediaTitle"
             value={mediaTitle}
             onChange={(e) => setMediaTitle(e.target.value)}
-            required
           />
         </div>
         <div>
@@ -125,27 +135,21 @@ const Searcher = () => {
             </div>
           )}
         </div>
-        <div>
-          <label>Search by Media Source:</label>
-          <div>
-            <input
-              type="checkbox"
-              value="Facebook"
-              onChange={handleMediaSourceChange}
-              checked={mediaSources.includes('Facebook')}
-            />
-            <label>Facebook</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              value="Instagram"
-              onChange={handleMediaSourceChange}
-              checked={mediaSources.includes('Instagram')}
-            />
-            <label>Instagram</label>
-          </div>
+        <div id="type">
+          <label>Media Source:</label>
+          {mediaSourcesList.map((source) => (
+            <div key={source}>
+              <input
+                type="checkbox"
+                value={source}
+                onChange={handleMediaSourceChange}
+                checked={mediaSources.includes(source)}
+              />
+              <label>{source}</label>
+            </div>
+          ))}
         </div>
+
         <div>
           <label htmlFor="keywords">Search by Keywords:</label>
           <input
@@ -158,27 +162,27 @@ const Searcher = () => {
         <button type="submit">Search</button>
       </form>
 
-
-<div >
-
-      {isSearchClicked && searchResults.length > 0 && (
-        <div>
-          <h2>Search Results:</h2>
-          <ul>
-            {searchResults.map((result) => (
-              <li key={result._id}>
-                <img src={result.image} alt="image" />
-                <h3>{result.mediaTitle}</h3>
-                <p>Date: {result.date}</p>
-                <p>Media Sources: {result.mediaSource.join(', ')}</p>
-                <p>Keywords: {result.keywords}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-</div>
-
+      <div>
+        {isSearchClicked && searchResults.length > 0 && (
+          <div>
+            <h2>Search Results:</h2>
+            <ul>
+              {searchResults.map((result) => (
+                <li key={result._id}>
+                  <img
+                    src={`data:image/jpeg;base64,${result.image}`}
+                    alt={result.mediaTitle}
+                  />
+                  <h3>{result.mediaTitle}</h3>
+                  <p>Date: {result.date}</p>
+                  <p>Media Sources: {result.mediaSource.join(", ")}</p>
+                  <p>Keywords: {result.keywords}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
