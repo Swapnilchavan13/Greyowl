@@ -11,7 +11,6 @@ const UploadForm = () => {
   const [mediaSource, setMediaSource] = useState([]);
   const [loading, setLoading] = useState(false);
 
-
   const mediaSourcesList = [
     'Instagram',
     'Owned',
@@ -120,8 +119,8 @@ const UploadForm = () => {
         </div>
         </div>
       </div>
-      <div id='type'>
         <label>Media Type:</label>
+      <div id='type'>
         <div>
           <input
             type='radio'

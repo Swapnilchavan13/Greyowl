@@ -24,7 +24,6 @@ const Searcher = () => {
       }
       const data = await response.json();
 
-      // Parse the 'mediaSource' data back into an array
       const formattedData = data.map((item) => ({
         ...item,
         mediaSource: JSON.parse(item.mediaSource),
