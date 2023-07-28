@@ -74,7 +74,7 @@ const UploadForm = () => {
   return (
     <form className='container' onSubmit={handleSubmit}>
       <Link to='/search'>
-        <button>Search Page</button>
+        <button className='mainbtn'>Search Page</button>
       </Link>
       <h1>Upload Form</h1>
       <div>

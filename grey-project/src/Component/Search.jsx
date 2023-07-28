@@ -92,7 +92,7 @@ const Searcher = () => {
     <div>
       <form id="search" onSubmit={handleSubmit}>
         <Link to="/upload">
-          <button>Upload Page</button>
+          <button className="mainbtn">Upload Page</button>
         </Link>
         <h1>Search Page</h1>
         <div>
