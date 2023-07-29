@@ -96,6 +96,7 @@ const Searcher = () => {
 
   return (
     <div>
+      <h1 style={{fontSize:'50px'}}>Content System</h1>
       <form id="search" onSubmit={handleSubmit}>
         <Link to="/upload">
           <button className="mainbtn">Upload Page</button>

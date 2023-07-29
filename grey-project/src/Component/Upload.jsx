@@ -72,6 +72,8 @@ const UploadForm = () => {
   };
 
   return (
+    <>
+    <h1 style={{fontSize:'50px'}}>Content System</h1>
     <form className='container' onSubmit={handleSubmit}>
       <Link to='/search'>
         <button className='mainbtn'>Search Page</button>
@@ -199,6 +201,7 @@ const UploadForm = () => {
         {loading ? 'Updating...' : 'Upload'}
       </button>
     </form>
+    </>
   );
 };
 
