@@ -18,7 +18,9 @@ const Searcher = () => {
 
   const fetchSearchResults = async () => {
     try {
-      const response = await fetch("https://lonely-cow-life-jacket.cyclic.app/main");
+      const response = await fetch(
+        "https://lonely-cow-life-jacket.cyclic.app/main"
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch data from the API");
       }
@@ -72,7 +74,11 @@ const Searcher = () => {
       const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
       const keywordsMatch = keywords && data.keywords === keywords;
       const dateMatch =
-        dateSelected && fromDate && toDate && data.date >= fromDate && data.date <= toDate;
+        dateSelected &&
+        fromDate &&
+        toDate &&
+        data.date >= fromDate &&
+        data.date <= toDate;
       const mediaSourceMatch =
         mediaSources.length > 0 &&
         mediaSources.some((source) => data.mediaSource.includes(source));
@@ -176,6 +182,12 @@ const Searcher = () => {
                   <p>Date: {result.date}</p>
                   <p>Media Sources: {result.mediaSource.join(", ")}</p>
                   <p>Keywords: {result.keywords}</p>
+                  <a
+                    href={`data:image/jpeg;base64,${result.image}`}
+                    download={`${result.mediaTitle}.jpg`}
+                  >
+                    Download Image
+                  </a>
                 </li>
               ))}
             </ul>
