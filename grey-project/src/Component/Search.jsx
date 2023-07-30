@@ -172,9 +172,9 @@ const Searcher = () => {
         {isSearchClicked && searchResults.length > 0 && (
           <div>
             <h2>Search Results:</h2>
-            <ul>
+            <div id="searchdata">
               {searchResults.map((result) => (
-                <li key={result._id}>
+                <div className="searchdata" key={result._id}>
                   <img
                     src={`data:image/jpeg;base64,${result.image}`}
                     alt={result.mediaTitle}
@@ -187,11 +187,13 @@ const Searcher = () => {
                     href={`data:image/jpeg;base64,${result.image}`}
                     download={`${result.mediaTitle}.jpg`}
                   >
+                    <button id="btn">
                     Download Image
+                    </button>
                   </a>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
       </div>

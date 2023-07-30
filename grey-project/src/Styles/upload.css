@@ -173,3 +173,17 @@ color: white;
   #type1 div input[type='radio']{
   border: 10px solid red;
   }
+
+  .searchdata{
+    border: 1px solid black;
+    width: fit-content;
+    margin: auto;
+    padding: 20px;
+    margin-top: 10px;
+  }
+  #btn{
+    width: fit-content;
+  }
+  #btn:hover{
+    color: white;
+  }
