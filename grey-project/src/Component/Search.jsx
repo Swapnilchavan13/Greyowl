@@ -11,10 +11,11 @@ const Searcher = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [mockData, setMockData] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [selectedMediaType, setSelectedMediaType] = useState("");
 
   useEffect(() => {
     fetchSearchResults();
-  }, []);
+  }, [selectedMediaType]);
 
   const fetchSearchResults = async () => {
     try {
@@ -31,7 +32,16 @@ const Searcher = () => {
         mediaSource: JSON.parse(item.mediaSource),
       }));
 
-      setMockData(formattedData);
+      // Filter the data based on the selected media type
+      const filteredData = formattedData.filter((item) => {
+        if (selectedMediaType === "") {
+          return true; // Show all data if no media type is selected
+        } else {
+          return item.mediaType === selectedMediaType;
+        }
+      });
+
+      setMockData(filteredData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -69,10 +79,11 @@ const Searcher = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setIsSearchClicked(true);
-
+  
     const filteredResults = mockData.filter((data) => {
       const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
-      const keywordsMatch = keywords && data.keywords === keywords;
+      const keywordsMatch =
+        keywords && data.keywords.toLowerCase().includes(keywords.toLowerCase());
       const dateMatch =
         dateSelected &&
         fromDate &&
@@ -82,7 +93,7 @@ const Searcher = () => {
       const mediaSourceMatch =
         mediaSources.length > 0 &&
         mediaSources.some((source) => data.mediaSource.includes(source));
-
+  
       return (
         (!mediaTitle || titleMatch) &&
         (!dateSelected || dateMatch) &&
@@ -90,13 +101,28 @@ const Searcher = () => {
         (!keywords || keywordsMatch)
       );
     });
-
+  
     setSearchResults(filteredResults);
+  };
+  
+
+  const mediaTypesList = [
+    "png",
+    "jpg",
+    "gif",
+    "MP4",
+    "MOV",
+    "WMV",
+    "AVI",
+  ];
+
+  const handleMediaTypeChange = (event) => {
+    setSelectedMediaType(event.target.value);
   };
 
   return (
     <div>
-      <h1 style={{fontSize:'50px'}}>Content System</h1>
+      <h1 style={{ fontSize: "50px" }}>Content Upload and Retrieval System</h1>
       <form id="search" onSubmit={handleSubmit}>
         <Link to="/upload">
           <button className="mainbtn">Upload Page</button>
@@ -155,7 +181,31 @@ const Searcher = () => {
             </div>
           ))}
         </div>
-
+        <div>
+          <label>Media Type:</label>
+          <div id="type">
+            <div>
+              <input
+                type="radio"
+                value=""
+                checked={selectedMediaType === ""}
+                onChange={handleMediaTypeChange}
+              />
+              <label>All</label>
+            </div>
+            {mediaTypesList.map((type) => (
+              <div key={type}>
+                <input
+                  type="radio"
+                  value={type}
+                  checked={selectedMediaType === type}
+                  onChange={handleMediaTypeChange}
+                />
+                <label>{type}</label>
+              </div>
+            ))}
+          </div>
+        </div>
         <div>
           <label htmlFor="keywords">Search by Keywords:</label>
           <input
@@ -167,7 +217,6 @@ const Searcher = () => {
         </div>
         <button type="submit">Search</button>
       </form>
-
       <div>
         {isSearchClicked && searchResults.length > 0 && (
           <div>
@@ -187,9 +236,7 @@ const Searcher = () => {
                     href={`data:image/jpeg;base64,${result.image}`}
                     download={`${result.mediaTitle}.jpg`}
                   >
-                    <button id="btn">
-                    Download Image
-                    </button>
+                    <button id="btn">Download Image</button>
                   </a>
                 </div>
               ))}
