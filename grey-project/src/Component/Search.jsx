@@ -120,6 +120,19 @@ const Searcher = () => {
     setSelectedMediaType(event.target.value);
   };
 
+  const renderMediaContent = (result) => {
+    if (["MP4", "MOV", "WMV", "AVI"].includes(result.mediaType)) {
+      return (
+        <video width="250" height="240" controls>
+          <source src={`data:video/${result.mediaType};base64,${result.image}`} />
+          Your browser does not support the video tag.
+        </video>
+      );
+    } else {
+      return <img src={`data:image/jpeg;base64,${result.image}`} alt={result.mediaTitle} />;
+    }
+  };
+
   return (
     <div>
       <h1 style={{ fontSize: "50px" }}>Content Upload and Retrieval System</h1>
@@ -224,19 +237,16 @@ const Searcher = () => {
             <div id="searchdata">
               {searchResults.map((result) => (
                 <div className="searchdata" key={result._id}>
-                  <img
-                    src={`data:image/jpeg;base64,${result.image}`}
-                    alt={result.mediaTitle}
-                  />
+                  {renderMediaContent(result)}
                   <h3>{result.mediaTitle}</h3>
                   <p>Date: {result.date}</p>
                   <p>Media Sources: {result.mediaSource.join(", ")}</p>
                   <p>Keywords: {result.keywords}</p>
                   <a
                     href={`data:image/jpeg;base64,${result.image}`}
-                    download={`${result.mediaTitle}.jpg`}
+                    download={`${result.mediaTitle}.${result.mediaType.toLowerCase()}`}
                   >
-                    <button id="btn">Download Image</button>
+                    <button id="btn">Download</button>
                   </a>
                 </div>
               ))}

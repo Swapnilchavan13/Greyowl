@@ -9,8 +9,6 @@ function App() {
   return (
     <div className="App">
       <BrowserRouter>
-      {/* <LoginForm /> */}
-      {/* <Searcher /> */}
         <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/search" element={<Searcher />} />
