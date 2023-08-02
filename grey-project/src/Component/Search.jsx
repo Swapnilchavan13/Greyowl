@@ -32,10 +32,9 @@ const Searcher = () => {
         mediaSource: JSON.parse(item.mediaSource),
       }));
 
-      // Filter the data based on the selected media type
       const filteredData = formattedData.filter((item) => {
         if (selectedMediaType === "") {
-          return true; // Show all data if no media type is selected
+          return true;
         } else {
           return item.mediaType === selectedMediaType;
         }
