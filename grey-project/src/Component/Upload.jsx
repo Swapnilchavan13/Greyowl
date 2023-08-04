@@ -76,7 +76,7 @@ const UploadForm = () => {
     <h1 style={{fontSize:'50px'}}>Content Upload and Retrieval System</h1>
     <form className='container' onSubmit={handleSubmit}>
       <Link to='/search'>
-        <button className='mainbtn'>Search Page</button>
+        <button className='mainbtn'>Go to Search Page</button>
       </Link>
       <h1>Upload Form</h1>
       <div>
@@ -90,7 +90,7 @@ const UploadForm = () => {
         />
       </div>
       <div>
-        <label htmlFor='image'>Media Image:</label>
+        <label htmlFor='image'>Media Image or Video:</label>
         <input type='file' id='image' onChange={handleImageChange} required />
       </div>
       <div>

@@ -137,7 +137,7 @@ const Searcher = () => {
       <h1 style={{ fontSize: "50px" }}>Content Upload and Retrieval System</h1>
       <form id="search" onSubmit={handleSubmit}>
         <Link to="/upload">
-          <button className="mainbtn">Upload Page</button>
+          <button className="mainbtn">Go to Upload Page</button>
         </Link>
         <h1>Search Page</h1>
         <div>
