@@ -12,10 +12,39 @@ const Searcher = () => {
   const [mockData, setMockData] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [selectedMediaType, setSelectedMediaType] = useState("");
+  const [searching, setSearching] = useState(false); // New state for searching status
 
   useEffect(() => {
     fetchSearchResults();
   }, [selectedMediaType]);
+
+  useEffect(() => {
+    if (isSearchClicked) {
+      const filteredResults = mockData.filter((data) => {
+        const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
+        const keywordsMatch =
+          keywords && data.keywords.toLowerCase().includes(keywords.toLowerCase());
+        const dateMatch =
+          dateSelected &&
+          fromDate &&
+          toDate &&
+          data.date >= fromDate &&
+          data.date <= toDate;
+        const mediaSourceMatch =
+          mediaSources.length > 0 &&
+          mediaSources.some((source) => data.mediaSource.includes(source));
+
+        return (
+          (!mediaTitle || titleMatch) &&
+          (!dateSelected || dateMatch) &&
+          (!mediaSources.length || mediaSourceMatch) &&
+          (!keywords || keywordsMatch)
+        );
+      });
+
+      setSearchResults(filteredResults);
+    }
+  }, [mockData, isSearchClicked, mediaTitle, dateSelected, fromDate, toDate, mediaSources, keywords]);
 
   const fetchSearchResults = async () => {
     try {
@@ -75,10 +104,11 @@ const Searcher = () => {
     }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSearchClicked(true);
-  
+    setSearching(true); // Set searching status to true
+
     const filteredResults = mockData.filter((data) => {
       const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
       const keywordsMatch =
@@ -92,7 +122,7 @@ const Searcher = () => {
       const mediaSourceMatch =
         mediaSources.length > 0 &&
         mediaSources.some((source) => data.mediaSource.includes(source));
-  
+
       return (
         (!mediaTitle || titleMatch) &&
         (!dateSelected || dateMatch) &&
@@ -100,10 +130,11 @@ const Searcher = () => {
         (!keywords || keywordsMatch)
       );
     });
-  
+
     setSearchResults(filteredResults);
+
+    setSearching(false); // Set searching status back to false
   };
-  
 
   const mediaTypesList = [
     "png",
@@ -230,27 +261,31 @@ const Searcher = () => {
         <button type="submit">Search</button>
       </form>
       <div>
-        {isSearchClicked && searchResults.length > 0 && (
-          <div>
-            <h2>Search Results:</h2>
-            <div id="searchdata">
-              {searchResults.map((result) => (
-                <div className="searchdata" key={result._id}>
-                  {renderMediaContent(result)}
-                  <h3>{result.mediaTitle}</h3>
-                  <p>Date: {result.date}</p>
-                  <p>Media Sources: {result.mediaSource.join(", ")}</p>
-                  <p>Keywords: {result.keywords}</p>
-                  <a
-                    href={`data:image/jpeg;base64,${result.image}`}
-                    download={`${result.mediaTitle}.${result.mediaType.toLowerCase()}`}
-                  >
-                    <button id="btn">Download</button>
-                  </a>
-                </div>
-              ))}
+        {searching ? (
+          <h1>Searching...</h1>
+        ) : (
+          isSearchClicked && searchResults.length > 0 && (
+            <div>
+              <h2>Search Results:</h2>
+              <div id="searchdata">
+                {searchResults.map((result) => (
+                  <div className="searchdata" key={result._id}>
+                    {renderMediaContent(result)}
+                    <h3>{result.mediaTitle}</h3>
+                    <p>Date: {result.date}</p>
+                    <p>Media Sources: {result.mediaSource.join(", ")}</p>
+                    <p>Keywords: {result.keywords}</p>
+                    <a
+                      href={`data:image/jpeg;base64,${result.image}`}
+                      download={`${result.mediaTitle}.${result.mediaType.toLowerCase()}`}
+                    >
+                      <button id="btn">Download</button>
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )
         )}
       </div>
     </div>
