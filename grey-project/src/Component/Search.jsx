@@ -12,7 +12,7 @@ const Searcher = () => {
   const [mockData, setMockData] = useState([]);
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [selectedMediaType, setSelectedMediaType] = useState("");
-  const [searching, setSearching] = useState(false); // New state for searching status
+  const [searching, setSearching] = useState(false);
 
   useEffect(() => {
     fetchSearchResults();
@@ -107,7 +107,7 @@ const Searcher = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSearchClicked(true);
-    setSearching(true); // Set searching status to true
+    setSearching(true); 
 
     const filteredResults = mockData.filter((data) => {
       const titleMatch = mediaTitle && data.mediaTitle === mediaTitle;
@@ -133,7 +133,7 @@ const Searcher = () => {
 
     setSearchResults(filteredResults);
 
-    setSearching(false); // Set searching status back to false
+    setSearching(false);
   };
 
   const mediaTypesList = [
