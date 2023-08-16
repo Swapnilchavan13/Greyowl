@@ -47,11 +47,10 @@ const UploadForm = () => {
     data.append('image', imageFile);
 
     try {
-      const response = await fetch('https://lonely-cow-life-jacket.cyclic.app/data', {
+        const response = await fetch('http://199.241.138.229:8000/image/', {
         method: 'POST',
         body: data,
       });
-
       if (response.ok) {
         alert('Data saved successfully:', data);
 
@@ -61,7 +60,8 @@ const UploadForm = () => {
         setMediaType('');
         setKeywords('');
         setImageFile(null);
-      } else {
+      } 
+      else {
         alert('Failed to save data:', response.status, response.statusText);
       }
     } catch (error) {

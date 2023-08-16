@@ -48,15 +48,12 @@ const Searcher = () => {
 
   const fetchSearchResults = async () => {
     try {
-      const response = await fetch(
-        "https://lonely-cow-life-jacket.cyclic.app/main"
-      );
-      if (!response.ok) {
-        throw new Error("Failed to fetch data from the API");
-      }
-      const data = await response.json();
+      const response = await fetch("http://199.241.138.229:8000/image/");
 
-      const formattedData = data.map((item) => ({
+      const data = await response.json();
+      // console.log(data)
+
+      const formattedData = data.data.map((item) => ({
         ...item,
         mediaSource: JSON.parse(item.mediaSource),
       }));
@@ -154,14 +151,15 @@ const Searcher = () => {
     if (["MP4", "MOV", "WMV", "AVI"].includes(result.mediaType)) {
       return (
         <video width="250" height="240" controls>
-          <source src={`data:video/${result.mediaType};base64,${result.image}`} />
+          <source src={result.image} type={`video/${result.mediaType.toLowerCase()}`} />
           Your browser does not support the video tag.
         </video>
       );
     } else {
-      return <img src={`data:image/jpeg;base64,${result.image}`} alt={result.mediaTitle} />;
+      return <img src={result.image} alt={result.mediaTitle} />;
     }
   };
+  
 
   return (
     <div>
@@ -261,33 +259,36 @@ const Searcher = () => {
         <button type="submit">Search</button>
       </form>
       <div>
-        {searching ? (
-          <h1>Searching...</h1>
-        ) : (
-          isSearchClicked && searchResults.length > 0 && (
-            <div>
-              <h2>Search Results:</h2>
-              <div id="searchdata">
-                {searchResults.map((result) => (
-                  <div className="searchdata" key={result._id}>
-                    {renderMediaContent(result)}
-                    <h3>{result.mediaTitle}</h3>
-                    <p>Date: {result.date}</p>
-                    <p>Media Sources: {result.mediaSource.join(", ")}</p>
-                    <p>Keywords: {result.keywords}</p>
-                    <a
-                      href={`data:image/jpeg;base64,${result.image}`}
-                      download={`${result.mediaTitle}.${result.mediaType.toLowerCase()}`}
-                    >
-                      <button id="btn">Download</button>
-                    </a>
-                  </div>
-                ))}
-              </div>
+  {searching ? (
+    <h1>Searching...</h1>
+  ) : (
+    isSearchClicked && searchResults.length > 0 && (
+      <div>
+        <h2>Search Results:</h2>
+        <div id="searchdata">
+          {searchResults.map((result) => (
+            <div className="searchdata" key={result.id}>
+              {renderMediaContent(result)}
+              <h3>{result.mediaTitle}</h3>
+              <p>Date: {result.date}</p>
+              <p>Media Sources: {result.mediaSource.join(", ")}</p>
+              <p>Keywords: {result.keywords}</p>
+              <a
+                href={result.image}
+                download={`${result.mediaTitle}.${result.mediaType.toLowerCase()}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <button id="btn">Download</button>
+              </a>
             </div>
-          )
-        )}
+          ))}
+        </div>
       </div>
+    )
+  )}
+</div>
+
     </div>
   );
 };
