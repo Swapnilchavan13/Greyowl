@@ -231,7 +231,7 @@ const UploadForm = () => {
           />
         </div>
         {uploadProgress > 0 && (
-          <div>Upload Progress: {uploadProgress.toFixed(2)}%</div>
+          <h4>Upload Progress: {uploadProgress.toFixed(2)}%</h4>
         )}
         <button type='submit' disabled={loading}>
           {loading ? 'Updating...' : 'Upload'}
