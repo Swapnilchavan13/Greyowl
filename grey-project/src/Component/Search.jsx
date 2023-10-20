@@ -48,7 +48,7 @@ const Searcher = () => {
 
   const fetchSearchResults = async () => {
     try {
-      const response = await fetch("http://199.241.138.229:8000/image/");
+      const response = await fetch("http://62.72.59.146:8001/image/");
 
       const data = await response.json();
       // console.log(data)

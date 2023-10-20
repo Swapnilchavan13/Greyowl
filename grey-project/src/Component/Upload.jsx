@@ -51,7 +51,7 @@ const UploadForm = () => {
 
     if (imageFile) {
       const xhr = new XMLHttpRequest();
-      xhr.open('POST', 'http://199.241.138.229:8000/image/', true);
+      xhr.open('POST', 'http://62.72.59.146:8001/image/', true);
 
       xhr.upload.onprogress = (event) => {
         if (event.lengthComputable) {
@@ -81,7 +81,7 @@ const UploadForm = () => {
       xhr.send(data);
     } else {
       try {
-        const response = await fetch('http://199.241.138.229:8000/image/', {
+        const response = await fetch('http://62.72.59.146:8001/image/', {
           method: 'POST',
           body: data,
         });
